@@ -1,11 +1,12 @@
 import React from 'react';
+import uniqid from 'uniqid';
 import Overview from './components/Overview';
 import './App.css';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { inputField: '', list: [] };
+		this.state = { inputField: { text: '', id: uniqid() }, list: [] };
 
 		this.handleChange = this.handleChange.bind(this);
 		this.inputSubmit = this.inputSubmit.bind(this);
@@ -13,13 +14,15 @@ class App extends React.Component {
 
 	handleChange(e) {
 		e.preventDefault();
-		this.setState({ inputField: e.target.value });
+		this.setState({ inputField: { text: e.target.value } });
 	}
 
 	inputSubmit(e) {
 		e.preventDefault();
-		this.setState({ list: [...this.state.list, this.state.inputField] });
-		this.setState({ inputField: '' });
+		this.setState({
+			list: [...this.state.list, this.state.inputField.text],
+		});
+		this.setState({ inputField: { text: '', id: uniqid() } });
 	}
 
 	render() {
@@ -31,7 +34,7 @@ class App extends React.Component {
 						<input
 							type="text"
 							onChange={this.handleChange}
-							value={inputField}
+							value={inputField.text}
 						></input>
 						<button onClick={this.inputSubmit}>Submit</button>
 					</form>
