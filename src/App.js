@@ -14,30 +14,30 @@ class App extends React.Component {
 	handleChange(e) {
 		e.preventDefault();
 		this.setState({ inputField: e.target.value });
-		// console.log(this.state);
 	}
 
 	inputSubmit(e) {
 		e.preventDefault();
 		this.setState({ list: [...this.state.list, this.state.inputField] });
 		this.setState({ inputField: '' });
-		console.log(this.state);
 	}
 
 	render() {
+		let { inputField, list } = this.state;
 		return (
 			<div className="app-container">
 				<div className="input-parent">
 					<form>
 						<input
+							type="text"
 							onChange={this.handleChange}
-							value={this.state.inputField}
+							value={inputField}
 						></input>
 						<button onClick={this.inputSubmit}>Submit</button>
 					</form>
 				</div>
 				<div className="list-parent">
-					<Overview tasks={this.state.list}></Overview>
+					<Overview tasks={list}></Overview>
 				</div>
 			</div>
 		);
