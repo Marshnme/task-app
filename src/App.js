@@ -5,14 +5,36 @@ import './App.css';
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { list: [] };
+		this.state = { inputField: '', list: [] };
+
+		this.handleChange = this.handleChange.bind(this);
+		this.inputSubmit = this.inputSubmit.bind(this);
+	}
+
+	handleChange(e) {
+		e.preventDefault();
+		this.setState({ inputField: e.target.value });
+		// console.log(this.state);
+	}
+
+	inputSubmit(e) {
+		e.preventDefault();
+		this.setState({ list: [...this.state.list, this.state.inputField] });
+		this.setState({ inputField: '' });
+		console.log(this.state);
 	}
 
 	render() {
 		return (
-			<div>
+			<div className="app-container">
 				<div className="input-parent">
-					<input></input>
+					<form>
+						<input
+							onChange={this.handleChange}
+							value={this.state.inputField}
+						></input>
+						<button onClick={this.inputSubmit}>Submit</button>
+					</form>
 				</div>
 				<div className="list-parent">
 					<Overview tasks={this.state.list}></Overview>
