@@ -4,11 +4,16 @@ class Overview extends React.Component{
     
 
     render() {
-        let {tasks} = this.props
+        let { tasks } = this.props
+        console.log(tasks)
         return (
             <div>
                 {tasks.map(task => {
-                    return <p key={tasks.id}>{task}</p>
+                    return (
+                        <div key={task.id} className='task-item'>
+                           <p> <span>{task.num}.</span>{task.item}</p>
+                        </div>
+                    )
                 })}
             </div>
         );
