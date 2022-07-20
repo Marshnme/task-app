@@ -29,7 +29,18 @@ form{
   margin-bottom:3rem;
 }
 
+.task-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.task-item span{
+.task-num{
   margin-right:.5rem;
+}
+
+.task-delete{
+  margin-left: 1rem;
+  color:red;
+  cursor: pointer;
 }

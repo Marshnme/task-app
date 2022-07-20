@@ -13,6 +13,7 @@ class App extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.inputSubmit = this.inputSubmit.bind(this);
+		this.deleteItem = this.deleteItem.bind(this);
 	}
 
 	handleChange(e) {
@@ -27,6 +28,9 @@ class App extends React.Component {
 	inputSubmit(e) {
 		e.preventDefault();
 		console.log(this.state);
+		if (this.state.list.length === 0) {
+			this.listCounter = 1;
+		}
 		this.setState({
 			list: [
 				...this.state.list,
@@ -39,6 +43,17 @@ class App extends React.Component {
 		});
 		this.setState({ inputField: { text: '', id: uniqid() } });
 		this.listCounter++;
+	}
+
+	deleteItem(id, e) {
+		e.preventDefault();
+		console.log(this.state.list);
+		let newState = this.state.list.filter((item) => {
+			if (item.id !== id) {
+				return item;
+			}
+		});
+		this.setState({ list: newState });
 	}
 
 	render() {
@@ -56,7 +71,10 @@ class App extends React.Component {
 					</form>
 				</div>
 				<div className="list-parent">
-					<Overview tasks={list}></Overview>
+					<Overview
+						tasks={list}
+						removeTask={this.deleteItem}
+					></Overview>
 				</div>
 			</div>
 		);
