@@ -114,6 +114,7 @@ class App extends React.Component {
 		let { inputField, list, editField } = this.state;
 		return (
 			<div className="app-container">
+				<h2>ITEM LIST</h2>
 				<div className="input-parent">
 					<form>
 						<input
