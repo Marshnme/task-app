@@ -9,10 +9,15 @@ class App extends React.Component {
 		this.state = {
 			inputField: { text: '', id: uniqid() },
 			list: [],
+			editField: '',
+			edit: false,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
+		this.handleEditChange = this.handleEditChange.bind(this);
 		this.inputSubmit = this.inputSubmit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
+		this.handleEditSubmit = this.handleEditSubmit.bind(this);
 		this.deleteItem = this.deleteItem.bind(this);
 	}
 
@@ -23,11 +28,17 @@ class App extends React.Component {
 		});
 	}
 
+	handleEditChange(e) {
+		e.preventDefault();
+		this.setState({
+			editField: e.target.value,
+		});
+	}
+
 	listCounter = 1;
 
 	inputSubmit(e) {
 		e.preventDefault();
-		console.log(this.state);
 		if (this.state.list.length === 0) {
 			this.listCounter = 1;
 		}
@@ -38,6 +49,7 @@ class App extends React.Component {
 					item: this.state.inputField.text,
 					id: this.state.inputField.id,
 					num: this.listCounter,
+					edit: false,
 				},
 			],
 		});
@@ -45,9 +57,51 @@ class App extends React.Component {
 		this.listCounter++;
 	}
 
+	handleEdit(task, e) {
+		e.preventDefault();
+		e.stopPropagation();
+		if (this.state.edit === true) {
+			return;
+		} else {
+			let newList = this.state.list.map((item) => {
+				if (task.id === item.id) {
+					if (item.edit === true) {
+						item.edit = false;
+						return item;
+					} else if (item.edit === false) {
+						console.log('EDDITING');
+						item.edit = true;
+						this.setState({ edit: true });
+						this.setState({ editField: item.item });
+						return item;
+					}
+				} else {
+					return item;
+				}
+			});
+			this.setState({ list: newList });
+		}
+	}
+
+	handleEditSubmit(id, e) {
+		console.log(id, e);
+		e.preventDefault();
+		let newState = this.state.list.map((item) => {
+			if (item.id === id) {
+				item.item = this.state.editField;
+				item.edit = false;
+				this.setState({ edit: false });
+				return item;
+			} else {
+				return item;
+			}
+		});
+		this.setState({ list: newState });
+	}
+
 	deleteItem(id, e) {
 		e.preventDefault();
-		console.log(this.state.list);
+		e.stopPropagation();
 		let newState = this.state.list.filter((item) => {
 			if (item.id !== id) {
 				return item;
@@ -57,7 +111,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		let { inputField, list } = this.state;
+		let { inputField, list, editField } = this.state;
 		return (
 			<div className="app-container">
 				<div className="input-parent">
@@ -74,6 +128,10 @@ class App extends React.Component {
 					<Overview
 						tasks={list}
 						removeTask={this.deleteItem}
+						editField={editField}
+						handleEdit={this.handleEdit}
+						handleEditChange={this.handleEditChange}
+						handleEditSubmit={this.handleEditSubmit}
 					></Overview>
 				</div>
 			</div>
